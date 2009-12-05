@@ -69,7 +69,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
                 case 'header':
                 case 'section_open':
                     if ($this->blockState != self::STATE_CLOSED) {
-                        $this->rewriter->insertBlockCall($i, 'close_block');
+                        $this->rewriter->insertBlockCall($i, 'close_block', 2);
                         $this->blockState = self::STATE_CLOSED;
                     }
                     break;
@@ -83,7 +83,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         }
 
         if ($this->blockState != self::STATE_CLOSED) {
-            $this->rewriter->appendBlockCall('close_block');
+            $this->rewriter->appendBlockCall('close_block', 2);
         }
 
         $this->rewriter->apply($event->data->calls);
@@ -96,7 +96,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         switch ($data[0]) {
             case 'open_question':
                 if ($this->blockState != self::STATE_CLOSED) {
-                    $this->rewriter->insertBlockCall($index, 'close_block');
+                    $this->rewriter->insertBlockCall($index, 'close_block', 2);
                 }
 
                 $this->rewriter->insertBlockCall($index, 'open_block');
@@ -110,12 +110,9 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
                         break;
 
                     case self::STATE_QUESTION:
-                        $this->rewriter->insertBlockCall($index, 'close_question');
-                        $this->blockState = self::STATE_ANSWER;
-                        break;
-
                     case self::STATE_ANSWER:
-                        $this->rewriter->insertBlockCall($index, 'close_answer');
+                        $this->rewriter->insertBlockCall($index, 'close_block');
+                        $this->blockState = self::STATE_ANSWER;
                         break;
                 }
                 break;
@@ -127,12 +124,8 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
                         break;
 
                     case self::STATE_QUESTION:
-                        $this->rewriter->insertBlockCall($index, 'close_question');
-                        $this->blockState = self::STATE_CLOSED;
-                        break;
-
                     case self::STATE_ANSWER:
-                        $this->rewriter->insertBlockCall($index, 'close_answer');
+                        $this->rewriter->insertBlockCall($index, 'close_block');
                         $this->blockState = self::STATE_CLOSED;
                         break;
                 }
@@ -172,8 +165,10 @@ class qna_instruction_rewriter {
     /**
      *
      */
-    public function insertBlockCall($index, $data) {
-        $this->insertPluginCall($index, 'qna_block', array($data), DOKU_LEXER_SPECIAL);
+    public function insertBlockCall($index, $data, $repeat = 1) {
+        for ($i = 0; $i < $repeat; $i++) {
+            $this->insertPluginCall($index, 'qna_block', array($data), DOKU_LEXER_SPECIAL);
+        }
     }
 
     /**
@@ -186,8 +181,10 @@ class qna_instruction_rewriter {
     /**
      *
      */
-    public function appendBlockCall($data) {
-        $this->appendPluginCall('qna_block', array($data), DOKU_LEXER_SPECIAL);
+    public function appendBlockCall($data, $repeat = 1) {
+        for ($i = 0; $i < $repeat; $i++) {
+            $this->appendPluginCall('qna_block', array($data), DOKU_LEXER_SPECIAL);
+        }
     }
 
     /**
