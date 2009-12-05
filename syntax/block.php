@@ -80,10 +80,10 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
             list($tag, $style) = explode('_', $data[0]);
 
             if ($tag == 'open') {
-                $renderer->doc .= '<div style="qna-' . $style . '">' . DOKU_LF;
+                $renderer->doc .= '<div class="qna-' . $style . '">' . DOKU_LF;
 
                 if ($style == 'question') {
-                    $renderer->doc .= '<div style="qna-title">' . $data[1] . '</div>' . DOKU_LF;
+                    $renderer->doc .= '<div class="qna-title">' . $data[1] . '</div>' . DOKU_LF;
                 }
             }
             else {
