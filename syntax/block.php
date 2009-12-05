@@ -33,6 +33,10 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
         return 'substition';
     }
 
+    function getPType() {
+        return 'block';
+    }
+
     /**
      * What modes are allowed within our mode?
      */
