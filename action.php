@@ -20,10 +20,8 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     const STATE_QUESTION = 1;
     const STATE_ANSWER   = 2;
 
+    private $rewriter;
     private $blockState;
-    private $currentBlock;
-    private $currentSectionLevel;
-    private $sectionEdit;
 
     /**
      * Return some info
