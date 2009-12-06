@@ -118,6 +118,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             if (!empty($toq)) {
                 if ($empty) {
                     $renderer->doc .= '<div class="qna-toc">' . DOKU_LF;
+                    $renderer->listu_open();
                     $empty = false;
                 }
 
@@ -126,6 +127,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
         }
 
         if (!$empty) {
+            $renderer->listu_close();
             $renderer->doc .= '</div>' . DOKU_LF;
         }
     }
@@ -134,8 +136,6 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
      *
      */
     private function renderList($renderer, $pageId, $toq) {
-        $renderer->listu_open();
-
         foreach ($toq as $question) {
             $renderer->listitem_open(1);
             $renderer->listcontent_open();
@@ -143,7 +143,5 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             $renderer->listcontent_close();
             $renderer->listitem_close();
         }
-
-        $renderer->listu_close();
     }
 }
