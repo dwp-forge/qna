@@ -140,28 +140,28 @@ class qna_instruction_rewriter {
     private $correction;
 
     /**
-     *
+     * Constructor
      */
     public function __construct() {
         $this->correction = array();
     }
 
     /**
-     *
+     * Remove instruction at $index
      */
     public function delete($index) {
         $this->correction[$index][] = array(self::DELETE);
     }
 
     /**
-     *
+     * Insert a plugin call in front of instruction at $index
      */
     public function insertPluginCall($index, $name, $data, $state, $text = '') {
         $this->correction[$index][] = array(self::INSERT, array('plugin', array($name, $data, $state, $text)));
     }
 
     /**
-     *
+     * Insert qna_block plugin call in front of instruction at $index
      */
     public function insertBlockCall($index, $data, $repeat = 1) {
         for ($i = 0; $i < $repeat; $i++) {
@@ -170,14 +170,14 @@ class qna_instruction_rewriter {
     }
 
     /**
-     *
+     * Append a plugin call at the end of the instruction list
      */
     public function appendPluginCall($name, $data, $state, $text = '') {
         $this->correction[-1][] = array(self::INSERT, array('plugin', array($name, $data, $state, $text)));
     }
 
     /**
-     *
+     * Append qna_block plugin call at the end of the instruction list
      */
     public function appendBlockCall($data, $repeat = 1) {
         for ($i = 0; $i < $repeat; $i++) {
@@ -186,7 +186,7 @@ class qna_instruction_rewriter {
     }
 
     /**
-     *
+     * Apply the corrections
      */
     public function apply(&$instruction) {
         if (count($this->correction) > 0) {
@@ -235,7 +235,7 @@ class qna_instruction_rewriter {
     }
 
     /**
-     *
+     * Apply corrections at $index
      */
     private function applyCorrections($index, $input, &$output) {
         $delete = false;

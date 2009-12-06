@@ -18,10 +18,16 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
     private $mode;
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         $this->mode = substr(get_class($this), 7);
     }
 
+    /**
+     *
+     */
     public function getInfo() {
         return qna_getInfo('block syntax');
     }
@@ -51,11 +57,17 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
         return 55;
     }
 
+    /**
+     *
+     */
     public function connectTo($mode) {
         $this->Lexer->addSpecialPattern('^\?{3}.*?\n', $mode, $this->mode);
         $this->Lexer->addSpecialPattern('^!{3}', $mode, $this->mode);
     }
 
+    /**
+     *
+     */
     public function handle($match, $state, $pos, &$handler) {
         if ($state == DOKU_LEXER_SPECIAL) {
             if ($match{0} == '?') {
@@ -79,6 +91,9 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
         return $data;
     }
 
+    /**
+     *
+     */
     public function render($mode, &$renderer, $data) {
         if ($mode == 'xhtml') {
             list($tag, $style) = explode('_', $data[0]);
