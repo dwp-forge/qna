@@ -16,6 +16,10 @@ div.dokuwiki div.qna-title {
     margin-bottom: 0.5em;
 }
 
+div.dokuwiki div.qna-title a {
+    text-decoration: none;
+}
+
 div.dokuwiki div.qna-answer {
     border-top: 1px dashed __border__;
     padding: 1em 0 0.1em 2em;

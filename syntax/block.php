@@ -17,12 +17,16 @@ require_once(DOKU_PLUGIN . 'qna/info.php');
 class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
     private $mode;
+    private $questionId;
+    private $maxIdLength;
 
     /**
      * Constructor
      */
     public function __construct() {
         $this->mode = substr(get_class($this), 7);
+        $this->questionId = array();
+        $this->maxIdLength = 30;
     }
 
     /**
@@ -74,7 +78,9 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
                 $question = trim(substr($match, 3));
 
                 if ($question != '') {
-                    $data = array('open_question', $question);
+                    $identifier = $this->questionToIdentifier($question);
+
+                    $data = array('open_question', $question, $identifier);
                 }
                 else {
                     $data = array('close_block');
@@ -102,7 +108,9 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
                 $renderer->doc .= '<div class="qna-' . $style . '">' . DOKU_LF;
 
                 if ($style == 'question') {
-                    $renderer->doc .= '<div class="qna-title">' . $data[1] . '</div>' . DOKU_LF;
+                    $renderer->doc .= '<div class="qna-title">';
+                    $renderer->doc .= '<a name="' . $data[2] . '">';
+                    $renderer->doc .= $data[1] . '</a></div>' . DOKU_LF;
                 }
             }
             else {
@@ -111,7 +119,38 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
             return true;
         }
+        elseif ($mode == 'metadata') {
+            if ($data[0] == 'open_question') {
+                $meta['title'] = $data[1];
+                $meta['id'] = $data[2];
+
+                $renderer->meta['description']['tableofquestions'][] = $meta;
+            }
+            return true;
+        }
 
         return false;
+    }
+
+    /**
+     * Convert a question title to unique identifier
+     */
+    private function questionToIdentifier($title) {
+        $identifier = str_replace(':', '', cleanID($title));
+        $identifier = ltrim($identifier, '0123456789._-');
+
+        if (strlen($identifier) > $this->maxIdLength) {
+            $identifier = substr($identifier, 0, $this->maxIdLength);
+        }
+
+        $this->questionId[] = $identifier;
+
+        $count = count(array_keys($this->questionId, $identifier));
+
+        if ($count > 1) {
+            $identifier .= '_' . $count;
+        }
+
+        return $identifier;
     }
 }
