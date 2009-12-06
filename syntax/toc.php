@@ -61,7 +61,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
      *
      */
     public function connectTo($mode) {
-        $this->Lexer->addSpecialPattern('~~(?:QNA|FAQ)[^\n]*?~~', $mode, $this->mode);
+        $this->Lexer->addSpecialPattern('~~(?:QNA|FAQ)(?:\s[^\n]*?)?~~', $mode, $this->mode);
     }
 
     /**

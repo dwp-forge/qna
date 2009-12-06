@@ -65,8 +65,8 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
      *
      */
     public function connectTo($mode) {
-        $this->Lexer->addSpecialPattern('^\?{3}.*?\n', $mode, $this->mode);
-        $this->Lexer->addSpecialPattern('^!{3}', $mode, $this->mode);
+        $this->Lexer->addSpecialPattern('\n\?{3}.*?(?=\n)', $mode, $this->mode);
+        $this->Lexer->addSpecialPattern('\n!{3}', $mode, $this->mode);
     }
 
     /**
@@ -74,8 +74,8 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
      */
     public function handle($match, $state, $pos, $handler) {
         if ($state == DOKU_LEXER_SPECIAL) {
-            if ($match{0} == '?') {
-                $question = trim(substr($match, 3));
+            if ($match{1} == '?') {
+                $question = trim(substr($match, 4));
 
                 if ($question != '') {
                     $identifier = $this->questionToIdentifier($question);
