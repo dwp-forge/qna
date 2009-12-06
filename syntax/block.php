@@ -143,12 +143,11 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
             $identifier = substr($identifier, 0, $this->maxIdLength);
         }
 
-        $this->questionId[] = $identifier;
-
-        $count = count(array_keys($this->questionId, $identifier));
-
-        if ($count > 1) {
-            $identifier .= '_' . $count;
+        if (isset($this->questionId[$identifier])) {
+            $identifier .= '_' . ++$this->questionId[$identifier];
+        }
+        else {
+            $this->questionId[$identifier] = 1;
         }
 
         return $identifier;
