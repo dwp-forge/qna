@@ -33,14 +33,14 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     /**
      * Register callbacks
      */
-    public function register(&$controller) {
+    public function register($controller) {
         $controller->register_hook('PARSER_HANDLER_DONE', 'AFTER', $this, 'onParserHandlerDone');
     }
 
     /**
      *
      */
-    public function onParserHandlerDone(&$event, $param) {
+    public function onParserHandlerDone($event, $param) {
         $this->reset();
         $this->fixLayout($event);
     }
@@ -56,7 +56,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     /**
      * Insert implicit instructions
      */
-    private function fixLayout(&$event) {
+    private function fixLayout($event) {
         $instructions = count($event->data->calls);
         for ($i = 0; $i < $instructions; $i++) {
             $instruction =& $event->data->calls[$i];

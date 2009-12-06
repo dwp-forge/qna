@@ -72,7 +72,7 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
     /**
      *
      */
-    public function handle($match, $state, $pos, &$handler) {
+    public function handle($match, $state, $pos, $handler) {
         if ($state == DOKU_LEXER_SPECIAL) {
             if ($match{0} == '?') {
                 $question = trim(substr($match, 3));
@@ -100,7 +100,7 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
     /**
      *
      */
-    public function render($mode, &$renderer, $data) {
+    public function render($mode, $renderer, $data) {
         if ($mode == 'xhtml') {
             list($tag, $style) = explode('_', $data[0]);
 
