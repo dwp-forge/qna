@@ -40,18 +40,11 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
      * What kind of syntax are we?
      */
     public function getType() {
-        return 'substition';
+        return 'container';
     }
 
-    function getPType() {
+    public function getPType() {
         return 'block';
-    }
-
-    /**
-     * What modes are allowed within our mode?
-     */
-    public function getAllowedTypes() {
-        return array ();
     }
 
     /**
