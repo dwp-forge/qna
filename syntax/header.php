@@ -89,6 +89,7 @@ class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
                     $renderer->doc .= '</div>' . DOKU_LF;
                     break;
             }
+
             return true;
         }
         elseif ($mode == 'metadata') {
@@ -99,6 +100,7 @@ class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
 
                 $renderer->meta['description']['tableofquestions'][] = $meta;
             }
+
             return true;
         }
 

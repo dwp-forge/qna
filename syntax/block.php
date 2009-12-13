@@ -120,6 +120,7 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
                 $renderer->meta['description']['tableofquestions'][] = $meta;
             }
+
             return true;
         }
 
