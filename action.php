@@ -54,7 +54,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         $this->rewriter = new qna_instruction_rewriter();
         $this->blockState = self::STATE_CLOSED;
         $this->headerIndex = -1;
-        $this->headerLevel = 1;
+        $this->headerLevel = 0;
     }
 
     /**
@@ -63,7 +63,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     private function fixLayout($event) {
         $instructions = count($event->data->calls);
         for ($i = 0; $i < $instructions; $i++) {
-            $instruction =& $event->data->calls[$i];
+            $instruction = $event->data->calls[$i];
 
             switch ($instruction[0]) {
                 case 'header':
@@ -112,6 +112,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
                 }
 
                 $this->rewriter->insertBlockCall($index, 'open_block');
+                $this->rewriter->setQuestionLevel($index, $this->headerLevel + 1);
                 $this->blockState = self::STATE_QUESTION;
                 break;
 
@@ -166,6 +167,7 @@ class qna_instruction_rewriter {
 
     const DELETE = 1;
     const INSERT = 2;
+    const SET_LEVEL = 3;
 
     private $correction;
 
@@ -220,6 +222,13 @@ class qna_instruction_rewriter {
         for ($i = 0; $i < $repeat; $i++) {
             $this->appendPluginCall('qna_block', array($data), DOKU_LEXER_SPECIAL);
         }
+    }
+
+    /**
+     * Set open_question list level for TOC
+     */
+    public function setQuestionLevel($index, $level) {
+        $this->correction[$index][] = array(self::SET_LEVEL, $level);
     }
 
     /**
@@ -286,6 +295,12 @@ class qna_instruction_rewriter {
 
                 case self::INSERT:
                     $output[] = array($correction[1][0], $correction[1][1], $position);
+                    break;
+
+                case self::SET_LEVEL:
+                    if (($input[$index][0] == 'plugin') && ($input[$index][1][0] == 'qna_block') && ($input[$index][1][1][0] == 'open_question')) {
+                        $input[$index][1][1][3] = $correction[1];
+                    }
                     break;
             }
         }
