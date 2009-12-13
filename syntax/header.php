@@ -97,6 +97,7 @@ class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
                 $meta['title'] = $data[1];
                 $meta['id'] = $data[2];
                 $meta['level'] = $data[3];
+                $meta['class'] = 'header';
 
                 $renderer->meta['description']['tableofquestions'][] = $meta;
             }

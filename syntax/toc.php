@@ -187,7 +187,9 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
         for ($i = $index; ($i < $items) && ($toc[$i]['level'] == $level); $i++) {
             $renderer->listitem_open($level);
             $renderer->listcontent_open();
+            $renderer->doc .= '<span class="qna-toc-' . $toc[$i]['class'] . '">';
             $renderer->internallink($toc[$i]['link'], $toc[$i]['title']);
+            $renderer->doc .= '</span>';
             $renderer->listcontent_close();
 
             if ((($i + 1) < $items) && ($toc[$i + 1]['level'] > $level)) {
