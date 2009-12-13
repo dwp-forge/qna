@@ -91,7 +91,11 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
                 $data[0] = $ID;
             }
 
-            $this->renderToc($renderer, $data);
+            $toc = $this->buildToc($data);
+
+            if (!empty($toc)) {
+                $this->renderToc($renderer, $toc);
+            }
 
             return true;
         }
@@ -100,41 +104,51 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
     }
 
     /**
-     *
+     * Assemble questions from all pages into a single TOC
      */
-    private function renderToc($renderer, $pageId) {
-        $empty = true;
+    private function buildToc($pageId) {
+        $toc = array();
 
         foreach ($pageId as $id) {
-            $toq = p_get_metadata($id, 'description tableofquestions');
+            $pageToc = p_get_metadata($id, 'description tableofquestions');
 
-            if (!empty($toq)) {
-                if ($empty) {
-                    $renderer->doc .= '<div class="qna-toc">' . DOKU_LF;
-                    $renderer->listu_open();
-                    $empty = false;
+            if (!empty($pageToc)) {
+                foreach ($pageToc as $item) {
+                    $item['link'] = $id . '#' . $item['id'];
+                    $toc[] = $item;
                 }
-
-                $this->renderList($renderer, $id, $toq);
             }
         }
 
-        if (!$empty) {
-            $renderer->listu_close();
-            $renderer->doc .= '</div>' . DOKU_LF;
-        }
+        return $toc;
     }
 
     /**
      *
      */
-    private function renderList($renderer, $pageId, $toq) {
-        foreach ($toq as $question) {
-            $renderer->listitem_open(1);
+    private function renderToc($renderer, $toc) {
+        $renderer->doc .= '<div class="qna-toc">' . DOKU_LF;
+        $this->renderList($renderer, $toc, 0);
+        $renderer->doc .= '</div>' . DOKU_LF;
+    }
+
+    /**
+     *
+     */
+    private function renderList($renderer, $toc, $index) {
+        $items = count( $toc );
+        $level = 1;
+
+        $renderer->listu_open();
+
+        for ($i = $index; $i < $items; $i++) {
+            $renderer->listitem_open($level);
             $renderer->listcontent_open();
-            $renderer->internallink($pageId . '#' . $question['id'], $question['title']);
+            $renderer->internallink($toc[ $i ]['link'], $toc[ $i ]['title']);
             $renderer->listcontent_close();
             $renderer->listitem_close();
         }
+
+        $renderer->listu_close();
     }
 }
