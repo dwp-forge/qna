@@ -94,7 +94,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             $toc = $this->buildToc($data);
 
             if (!empty($toc)) {
-                $this->renderToc($renderer, $toc);
+                $this->renderToc($renderer, $this->normalizeToc($toc));
             }
 
             return true;
@@ -127,7 +127,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             }
         }
 
-        return $this->normalizeToc($toc);
+        return $toc;
     }
 
     /**
