@@ -38,13 +38,14 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
      * Register callbacks
      */
     public function register($controller) {
-        $controller->register_hook('PARSER_HANDLER_DONE', 'AFTER', $this, 'onParserHandlerDone');
+        $controller->register_hook('PARSER_HANDLER_DONE', 'AFTER', $this, 'afterParserHandlerDone');
+        $controller->register_hook('PARSER_CACHE_USE', 'BEFORE', $this, 'beforeParserCacheUse');
     }
 
     /**
      *
      */
-    public function onParserHandlerDone($event, $param) {
+    public function afterParserHandlerDone($event, $param) {
         $this->reset();
         $this->fixLayout($event);
     }
@@ -171,6 +172,34 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         }
 
         $this->rewriter->delete($index);
+    }
+
+    /**
+     *
+     */
+    public function beforeParserCacheUse($event, $param) {
+        global $ID;
+
+        $cache = $event->data;
+
+        if (isset($cache->mode) && ($cache->mode == 'xhtml')) {
+            $depends = p_get_metadata($ID, 'relation depends');
+
+            if (!empty($depends) && isset($depends['rendering'])) {
+                $this->addDependencies($cache, array_keys($depends['rendering']));
+            }
+        }
+    }
+
+    /**
+     * Add extra dependencies to the cache
+     */
+    private function addDependencies($cache, $depends) {
+        foreach ($depends as $file) {
+            if (!in_array($file, $cache->depends['files']) && file_exists($file)) {
+                $cache->depends['files'][] = $file;
+            }
+        }
     }
 }
 

@@ -99,6 +99,13 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
 
             return true;
         }
+        elseif ($mode == 'metadata') {
+            if (!empty($data)) {
+                $this->addCacheDependencies($renderer, $data);
+            }
+
+            return true;
+        }
 
         return false;
     }
@@ -193,5 +200,16 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
         $renderer->listu_close();
 
         return $i - 1;
+    }
+
+    /**
+     *
+     */
+    private function addCacheDependencies($renderer, $pageId) {
+        foreach ($pageId as $id) {
+            $metafile = metaFN($id, '.meta');
+
+            $renderer->meta['relation']['depends']['rendering'][$metafile] = true;
+        }
     }
 }
