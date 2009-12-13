@@ -91,6 +91,16 @@ class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
             }
             return true;
         }
+        elseif ($mode == 'metadata') {
+            if ($data[0] == 'open') {
+                $meta['title'] = $data[1];
+                $meta['id'] = $data[2];
+                $meta['level'] = $data[3];
+
+                $renderer->meta['description']['tableofquestions'][] = $meta;
+            }
+            return true;
+        }
 
         return false;
     }

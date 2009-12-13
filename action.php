@@ -23,7 +23,9 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     private $rewriter;
     private $blockState;
     private $headerIndex;
+    private $headerTitle;
     private $headerLevel;
+    private $headerId;
 
     /**
      * Return some info
@@ -54,7 +56,9 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         $this->rewriter = new qna_instruction_rewriter();
         $this->blockState = self::STATE_CLOSED;
         $this->headerIndex = -1;
+        $this->headerTitle = '';
         $this->headerLevel = 0;
+        $this->headerId = array();
     }
 
     /**
@@ -68,7 +72,9 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
             switch ($instruction[0]) {
                 case 'header':
                     $this->headerIndex = $i;
+                    $this->headerTitle = $instruction[1][0];
                     $this->headerLevel = $instruction[1][1];
+                    sectionID($instruction[1][0], $this->headerId);
                     /* Fall through */
 
                 case 'section_close':
@@ -155,7 +161,12 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
            1 to 3 gives some flexibility for better compatibility with other plugins that might
            rearrange instructions around the header. */
         if (($index - $this->headerIndex) < 4) {
-            $this->rewriter->insertHeaderCall($this->headerIndex, 'open');
+            $data[0] ='open';
+            $data[1] = $this->headerTitle;
+            $data[2] = end($this->headerId);
+            $data[3] = $this->headerLevel;
+
+            $this->rewriter->insertHeaderCall($this->headerIndex, $data);
             $this->rewriter->insertHeaderCall($this->headerIndex + 1, 'close');
         }
 
@@ -205,7 +216,11 @@ class qna_instruction_rewriter {
      * Insert qna_header plugin call in front of instruction at $index
      */
     public function insertHeaderCall($index, $data) {
-        $this->insertPluginCall($index, 'qna_header', array($data), DOKU_LEXER_SPECIAL);
+        if (!is_array($data)) {
+            $data = array($data);
+        }
+
+        $this->insertPluginCall($index, 'qna_header', $data, DOKU_LEXER_SPECIAL);
     }
 
     /**
