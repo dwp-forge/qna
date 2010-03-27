@@ -182,11 +182,13 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
 
         $cache = $event->data;
 
-        if (isset($cache->mode) && ($cache->mode == 'xhtml')) {
-            $depends = p_get_metadata($ID, 'relation depends');
+        if (isset($cache->page) && ($cache->page == $ID)) {
+            if (isset($cache->mode) && ($cache->mode == 'xhtml')) {
+                $depends = p_get_metadata($ID, 'relation depends');
 
-            if (!empty($depends) && isset($depends['rendering'])) {
-                $this->addDependencies($cache, array_keys($depends['rendering']));
+                if (!empty($depends) && isset($depends['rendering'])) {
+                    $this->addDependencies($cache, array_keys($depends['rendering']));
+                }
             }
         }
     }
