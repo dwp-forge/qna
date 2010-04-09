@@ -94,7 +94,9 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             $toc = $this->buildToc($data);
 
             if (!empty($toc)) {
-                $this->renderToc($renderer, $this->normalizeToc($toc));
+                $this->compressToc($toc);
+                $this->normalizeToc($toc);
+                $this->renderToc($renderer, $toc);
             }
 
             return true;
@@ -133,7 +135,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
     /**
      * Remove not used list levels
      */
-    private function normalizeToc($toc) {
+    private function compressToc(&$toc) {
         $maxLevel = 0;
 
         foreach ($toc as $item) {
@@ -142,12 +144,14 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             }
         }
 
+        /* Build list level usage histogram */
         $level = array_fill(1, $maxLevel, 0);
 
         foreach ($toc as $item) {
             $level[$item['level']]++;
         }
 
+        /* Determine how many unused list levels have to be skipped for each used one */
         $skipCount = 0;
 
         for ($l = 1; $l <= $maxLevel; $l++) {
@@ -159,11 +163,25 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
             }
         }
 
+        /* Remove unused list levels */
         foreach ($toc as &$item) {
             $item['level'] -= $level[$item['level']];
         }
+    }
 
-        return $toc;
+    /**
+     * Make sure that list starts with a first level item
+     */
+    private function normalizeToc(&$toc) {
+        $offset = 9;
+
+        for ($i = 0; $toc[$i]['level'] > 1; $i++) {
+            if (($toc[$i]['level'] - $offset) < 1) {
+                $offset = $toc[$i]['level'] - 1;
+            }
+
+            $toc[$i]['level'] -= $offset;
+        }
     }
 
     /**
