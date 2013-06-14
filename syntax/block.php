@@ -139,6 +139,8 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
             $identifier = substr($identifier, 0, $this->maxIdLength);
         }
 
+        $identifier = rtrim($identifier, '_');
+
         if (isset($this->questionId[$identifier])) {
             $identifier .= '_' . ++$this->questionId[$identifier];
         }
