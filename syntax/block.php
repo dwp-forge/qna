@@ -12,7 +12,6 @@ if(!defined('DOKU_INC')) die();
 
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_PLUGIN . 'syntax.php');
-require_once(DOKU_PLUGIN . 'qna/info.php');
 
 class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
@@ -27,13 +26,6 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
         $this->mode = substr(get_class($this), 7);
         $this->questionId = array();
         $this->maxIdLength = 30;
-    }
-
-    /**
-     *
-     */
-    public function getInfo() {
-        return qna_getInfo('block syntax');
     }
 
     /**
