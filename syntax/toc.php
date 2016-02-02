@@ -52,7 +52,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
     /**
      *
      */
-    public function handle($match, $state, $pos, $handler) {
+    public function handle($match, $state, $pos, Doku_Handler $handler) {
         global $ID;
 
         if ($state == DOKU_LEXER_SPECIAL) {
@@ -74,7 +74,7 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
     /**
      *
      */
-    public function render($mode, $renderer, $data) {
+    public function render($mode, Doku_Renderer $renderer, $data) {
         global $ID;
 
         if ($mode == 'xhtml') {

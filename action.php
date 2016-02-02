@@ -29,7 +29,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     /**
      * Register callbacks
      */
-    public function register($controller) {
+    public function register(Doku_Event_Handler $controller) {
         $controller->register_hook('PARSER_HANDLER_DONE', 'AFTER', $this, 'afterParserHandlerDone');
         $controller->register_hook('PARSER_CACHE_USE', 'BEFORE', $this, 'beforeParserCacheUse');
     }
