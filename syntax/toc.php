@@ -111,6 +111,10 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
         $toc = array();
 
         foreach ($pageId as $id) {
+            if (auth_quickaclcheck($id) < AUTH_READ) {
+                continue;
+            }
+
             $pageToc = p_get_metadata($id, 'description tableofquestions');
 
             if (!empty($pageToc)) {
