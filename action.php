@@ -156,8 +156,9 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         if (($index - $this->headerIndex) < 4) {
             $data[0] ='open';
             $data[1] = $this->headerTitle;
-            end($this->headerId);
+            $occurrence = end($this->headerId);
             $data[2] = key($this->headerId);
+            if ($occurrence != 0) $data[2] .= $occurrence;
             $data[3] = $this->headerLevel;
 
             $this->rewriter->insertHeaderCall($this->headerIndex, $data);
