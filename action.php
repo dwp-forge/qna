@@ -25,6 +25,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
     private $headerTitle;
     private $headerLevel;
     private $headerId;
+    private $headerCheck;
 
     /**
      * Register callbacks
@@ -51,7 +52,8 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         $this->headerIndex = -1;
         $this->headerTitle = '';
         $this->headerLevel = 0;
-        $this->headerId = array();
+        $this->headerId = '';
+        $this->headerCheck = array();
     }
 
     /**
@@ -67,7 +69,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
                     $this->headerIndex = $i;
                     $this->headerTitle = $instruction[1][0];
                     $this->headerLevel = $instruction[1][1];
-                    sectionID($instruction[1][0], $this->headerId);
+                    $this->headerId = sectionID($instruction[1][0], $this->headerCheck);
                     /* Fall through */
 
                 case 'section_close':
@@ -156,7 +158,7 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
         if (($index - $this->headerIndex) < 4) {
             $data[0] ='open';
             $data[1] = $this->headerTitle;
-            $data[2] = end($this->headerId);
+            $data[2] = $this->headerId;
             $data[3] = $this->headerLevel;
 
             $this->rewriter->insertHeaderCall($this->headerIndex, $data);
