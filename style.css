@@ -4,7 +4,6 @@ div.dokuwiki div.qna-block {
 
 div.dokuwiki div.qna-question {
     padding: 0.5em 1em 0.3em 2em;
-    background-color: __background_alt__;
     background-image: url(images/question.png);
     background-repeat: no-repeat;
     background-position: top left;
@@ -23,7 +22,6 @@ div.dokuwiki div.qna-title a {
 div.dokuwiki div.qna-answer {
     border-top: 1px dashed __border__;
     padding: 1em 1em 0.1em 2em;
-    background-color: __background_alt__;
     background-image: url(images/answer.png);
     background-repeat: no-repeat;
     background-position: top left;
