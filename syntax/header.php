@@ -74,7 +74,9 @@ class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
         if ($mode == 'xhtml') {
             switch ($data[0]) {
                 case 'open':
-                    $renderer->doc .= DOKU_LF . '<div class="qna-header">';
+                    $style = '-' . $this->getConf('style');
+                    if ($style == '-default') $style = '';
+                    $renderer->doc .= DOKU_LF . '<div class="qna-header' . $style . '">';
                     break;
 
                 case 'close':

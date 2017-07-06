@@ -184,7 +184,9 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
      *
      */
     private function renderToc($renderer, $toc) {
-        $renderer->doc .= '<div class="qna-toc">' . DOKU_LF;
+        $style = '-' . $this->getConf('style');
+        if ($style == '-default') $style = '';
+        $renderer->doc .= '<div class="qna-toc' . $style . '">' . DOKU_LF;
         $this->renderList($renderer, $toc, 0);
         $renderer->doc .= '</div>' . DOKU_LF;
     }

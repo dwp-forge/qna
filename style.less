@@ -1,0 +1,94 @@
+div.dokuwiki {
+
+  /* STYLE: DEFAULT */
+
+  div.qna-block {
+    margin-bottom: 1em;
+  }
+
+  div.qna-question {
+    background-image: url(images/question.png);
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding: 0.5em 1em 0.3em 2em;
+
+    div.qna-title {
+      font-size: 130%;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  div.qna-answer {
+    background-image: url(images/answer.png);
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding: 1em 1em 0.1em 2em;
+    border-top: 1px dashed @ini_border;
+  }
+
+  /* STYLE: SYMBOLS */
+
+  div.qna-toc-symbols {
+    & > ul {
+      background-color: @ini_background_alt;
+      padding: 0;
+      border: 1px solid @ini_border;
+    }
+
+    span.qna-toc-header * {
+      font-weight: bold !important;
+    }
+
+    span.qna-toc-question * {
+      font-weight: normal !important;
+    }
+  }
+
+  div.qna-header-symbols {
+    h1, h2, h3, h4 {
+      border-bottom: 1px solid @ini_border;
+    }
+  }
+
+  div.qna-block-symbols {
+    border: 1px solid @ini_border;
+    margin-bottom: 1em;
+  }
+
+  div.qna-question-symbols {
+    background-color: @ini_background_alt;
+    background-image: url(images/question-symbols.png);
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    padding: 1em 1em 1em 40px;
+
+    & > * {
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+
+    div.qna-title {
+      font-weight: bold;
+      margin-top: 0;
+    }
+  }
+
+  div.qna-answer-symbols {
+    background-color: @ini_background_alt;
+    background-image: url(images/answer-symbols.png);
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    padding: 1em 1em 1em 40px;
+    border-top: 1px solid @ini_border;
+
+    & > * {
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+
+    & > *:first-child {
+      margin-top: 0;
+    }
+  }
+}

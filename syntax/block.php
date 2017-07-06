@@ -87,12 +87,14 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
      */
     public function render($mode, Doku_Renderer $renderer, $data) {
         if ($mode == 'xhtml') {
-            list($tag, $style) = explode('_', $data[0]);
+            list($tag, $section) = explode('_', $data[0]);
 
             if ($tag == 'open') {
-                $renderer->doc .= '<div class="qna-' . $style . '">' . DOKU_LF;
+                $style = '-' . $this->getConf('style');
+                if ($style == '-default') $style = '';
+                $renderer->doc .= '<div class="qna-' . $section . $style . '">' . DOKU_LF;
 
-                if ($style == 'question') {
+                if ($section == 'question') {
                     $renderer->doc .= '<div class="qna-title">';
                     $renderer->doc .= '<a name="' . $data[2] . '">';
                     $renderer->doc .= $data[1] . '</a></div>' . DOKU_LF;
