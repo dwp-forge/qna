@@ -31,8 +31,20 @@ class action_plugin_qna extends DokuWiki_Action_Plugin {
      * Register callbacks
      */
     public function register(Doku_Event_Handler $controller) {
+        $controller->register_hook('DOKUWIKI_STARTED', 'BEFORE', $this, 'beforeDokuwikiStarted');
         $controller->register_hook('PARSER_HANDLER_DONE', 'AFTER', $this, 'afterParserHandlerDone');
         $controller->register_hook('PARSER_CACHE_USE', 'BEFORE', $this, 'beforeParserCacheUse');
+    }
+
+    /**
+     * Prepare plugin stylesheet file
+     */
+    public function beforeDokuwikiStarted($event) {
+        $fromConf = dirname(__FILE__) . '/style/' . $this->getConf('style') . '.less';
+        $inUse = dirname(__FILE__) . '/all.less';
+        if (!@file_exists($inUse) || @filesize($inUse) != @filesize($fromConf)) {
+            @copy($fromConf, $inUse);
+        }
     }
 
     /**
