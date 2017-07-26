@@ -8,3 +8,4 @@
 $lang['style']           = "Stilo";
 $lang['style_o_default'] = "Defaŭlto";
 $lang['style_o_symbols'] = "Simboloj";
+$lang['style_o_memes']   = "Memeoj";
