@@ -1,0 +1,6 @@
+WARNING: each LESS file in this folder must have a different size.
+
+The logic behind style configuration uses the file size in order to
+check which style is in use.
+As dirt as it certainly is, this is the simplest and most efficient
+way of checking without file loading and inspection.
