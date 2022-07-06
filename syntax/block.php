@@ -59,7 +59,7 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
      */
     public function handle($match, $state, $pos, Doku_Handler $handler) {
         if ($state == DOKU_LEXER_SPECIAL) {
-            if ($match{1} == '?') {
+            if ($match[1] == '?') {
                 $question = trim(substr($match, 4));
 
                 if ($question != '') {
