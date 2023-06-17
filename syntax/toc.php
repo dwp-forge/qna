@@ -7,12 +7,6 @@
  * @author     Mykola Ostrovskyy <dwpforge@gmail.com>
  */
 
-/* Must be run within Dokuwiki */
-if(!defined('DOKU_INC')) die();
-
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'syntax.php');
-
 class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
 
     private $mode;
@@ -58,10 +52,10 @@ class syntax_plugin_qna_toc extends DokuWiki_Syntax_Plugin {
         if ($state == DOKU_LEXER_SPECIAL) {
             preg_match('/~~(?:QNA|FAQ)(.*?)~~/', $match, $match);
             $data = preg_split('/\s+/', $match[1], -1, PREG_SPLIT_NO_EMPTY);
-            $ns = getNS($ID);
+            $resolver = new dokuwiki\File\PageResolver($ID);
 
             foreach ($data as &$pageId) {
-                resolve_pageid($ns, $pageId, $exists);
+                $pageId = $resolver->resolveId($pageId);
             }
         }
         else {

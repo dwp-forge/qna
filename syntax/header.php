@@ -7,12 +7,6 @@
  * @author     Mykola Ostrovskyy <dwpforge@gmail.com>
  */
 
-/* Must be run within Dokuwiki */
-if(!defined('DOKU_INC')) die();
-
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'syntax.php');
-
 class syntax_plugin_qna_header extends DokuWiki_Syntax_Plugin {
 
     private $mode;

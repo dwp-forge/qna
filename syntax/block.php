@@ -7,12 +7,6 @@
  * @author     Mykola Ostrovskyy <dwpforge@gmail.com>
  */
 
-/* Must be run within Dokuwiki */
-if(!defined('DOKU_INC')) die();
-
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'syntax.php');
-
 class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
 
     private $mode;
@@ -127,8 +121,8 @@ class syntax_plugin_qna_block extends DokuWiki_Syntax_Plugin {
         $identifier = str_replace(':', '', cleanID($title));
         $identifier = ltrim($identifier, '0123456789._-');
 
-        if (utf8_strlen($identifier) > $this->maxIdLength) {
-            $identifier = utf8_substr($identifier, 0, $this->maxIdLength);
+        if (\dokuwiki\Utf8\PhpString::strlen($identifier) > $this->maxIdLength) {
+            $identifier = \dokuwiki\Utf8\PhpString::substr($identifier, 0, $this->maxIdLength);
         }
 
         $identifier = rtrim($identifier, '_');
