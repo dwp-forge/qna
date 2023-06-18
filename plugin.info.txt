@@ -1,7 +1,7 @@
 base   qna
 author Mykola Ostrovskyy
 email  dwpforge@gmail.com
-date   2022-07-06
+date   2023-06-18
 name   QnA Plugin
 desc   Custom formatting for Q&A (FAQ) sections.
 url    http://www.dokuwiki.org/plugin:qna
